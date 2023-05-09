@@ -14,16 +14,10 @@ void dgemm(const size_t n, const double *A, const double *B, double *C){
     }
 }
 
-void aloca_matrizes(const size_t size, double **A, double **B, double **C){
+void aloca_matrizes(const size_t size, double *A, double *B, double *C){
 
-   // aloca memoria para as matrizes
-    A = (double **) malloc(size*sizeof(double*));
-    B = (double **) malloc(size*sizeof(double*));
-    C = (double **) malloc(size*sizeof(double*));
+    A = (double *) malloc(size*sizeof(double));
+    B = (double *) malloc(size*sizeof(double));
+    C = (double *) malloc(size*sizeof(double));
 
-    for(size_t i = 0; i < size; i++){
-        A[i] = (double *) malloc(size*sizeof(double));
-        B[i] = (double *) malloc(size*sizeof(double));
-        C[i] = (double *) malloc(size*sizeof(double));
-    }
 }

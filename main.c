@@ -6,11 +6,10 @@
 
 int main(int argc, char **argv){
 
-    double **matrixA, **matrixB, **matrixC;
+    double *matrixA, *matrixB, *matrixC;
     int random_base;
     const unsigned int fixed_seed = 0x12345678;
-    unsigned int size;
-    size_t offset;
+    size_t size; // size = rows * cols
 
     if(argv[1] == NULL){
         printf("Uso: %s <tamanho-da-matriz> -f (opcional)\n", argv[0]);
@@ -28,9 +27,9 @@ int main(int argc, char **argv){
     for(size_t i = 0; i < size; i++){
         random_base = rand();
         for(size_t j = 0; j < size; j++){
-            matrixA[i][j] = rand()/random_base;
-            matrixB[i][j] = rand()/random_base;
-            matrixC[i][j] = rand()/random_base;
+            //matrixA[i][j] = rand()/random_base;
+            //matrixB[i][j] = rand()/random_base;
+            //matrixC[i][j] = rand()/random_base;
         }
     }
 
