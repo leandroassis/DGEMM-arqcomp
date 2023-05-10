@@ -1,7 +1,7 @@
 SRC = $(wildcard *c)
 OBJ = $(SRC:.c=.o)
 CC = gcc
-CFLAGS = -Wall -O3 -lrt
+CFLAGS = -Wall -O3 -lrt -mavx
 
 %.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS)

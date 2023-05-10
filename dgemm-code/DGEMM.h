@@ -18,7 +18,7 @@
 #include <stdlib.h>
 
 void dgemm(const size_t, const double*, const double*, double*);
-//void dgemm_optimized(const size_t, double*, double*, double*);
+void dgemm_optimized(const size_t, double*, double*, double*);
 
 void aloca_matrizes(const size_t size, double **, double **, double **);
 void inicializa_matrizes(const size_t size, double *, double *, double *);
