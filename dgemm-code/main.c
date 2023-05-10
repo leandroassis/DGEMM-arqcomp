@@ -26,7 +26,7 @@ int main(void){
             aloca_matrizes(size*size, &matrixA, &matrixB, &matrixC);
 
             // inicializa as matrizes com valores "aleatórios"
-            inicializa_matrizes(size, matrixA, matrixB);
+            inicializa_matrizes(size, matrixA, matrixB, matrixC);
 
             // roda o algoritmo DGEMM normal
             clock_gettime(CLOCK_MONOTONIC, &t_ini); // tempo de inicio
@@ -38,7 +38,7 @@ int main(void){
 
             // roda o algoritmo DGEMM otimizado
             clock_gettime(CLOCK_MONOTONIC, &t_ini);
-            dgemm_optimized(size, matrixA, matrixB, matrixC);
+            //dgemm_optimized(size, matrixA, matrixB, matrixC);
             clock_gettime(CLOCK_MONOTONIC, &t_fim);
             t_exe[1] = (t_fim.tv_sec - t_ini.tv_sec) + (t_fim.tv_nsec - t_ini.tv_nsec) / 1e9; 
 

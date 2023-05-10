@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <x86intrin.h>
+//#include <x86intrin.h>
 #include "DGEMM.h"
 
 void dgemm(const size_t n, const double *A, const double *B, double *C){
@@ -16,6 +16,7 @@ void dgemm(const size_t n, const double *A, const double *B, double *C){
     }
 }
 
+/*
 void dgemm_optimized(const size_t n, const double *A, const double *B, double *C){
 // código retirado do livro
     for(size_t i = 0; i < n; i+=4){
@@ -28,6 +29,7 @@ void dgemm_optimized(const size_t n, const double *A, const double *B, double *C
         }
     }
 }
+*/
 
 void aloca_matrizes(const size_t size, double **A, double **B, double **C){
     *A = (double *) malloc(size * sizeof(double));
@@ -35,13 +37,14 @@ void aloca_matrizes(const size_t size, double **A, double **B, double **C){
     *C = (double *) malloc(size * sizeof(double));
 }
 
-void inicializa_matrizes(const size_t size, double *A, double *B){
+void inicializa_matrizes(const size_t size, double *A, double *B, double *C){
 
     for(size_t i = 0; i < size; i++){
         for(size_t j = 0; j < size; j++){
                 // atribui valores aleatórios 
                 A[i + j*size] = rand_double();
                 B[i + j*size] = rand_double();
+                C[i + j*size] = 0.0;
         }
     }
 
