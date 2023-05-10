@@ -32,9 +32,9 @@ void dgemm_optimized(const size_t n, const double *A, const double *B, double *C
 */
 
 void aloca_matrizes(const size_t size, double **A, double **B, double **C){
-    *A = (double *) malloc(size * sizeof(double));
-    *B = (double *) malloc(size * sizeof(double));
-    *C = (double *) malloc(size * sizeof(double));
+    *A = (double *) aligned_alloc(32, size * sizeof(double));
+    *B = (double *) aligned_alloc(32, size * sizeof(double));
+    *C = (double *) aligned_alloc(32, size * sizeof(double));
 }
 
 void inicializa_matrizes(const size_t size, double *A, double *B, double *C){
