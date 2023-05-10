@@ -1,5 +1,10 @@
 comparar com flags de otimização O1, O2, O3 e otimização padrão
-comparar com para diferentes tamanhos de matrizes 1024, 2048, 4096, 5096 e 10192
+comparar com para diferentes tamanhos de matrizes
 
 comparações:
 CPI (gráfico para cada otimização), tempo médio por tamanho (grafico para cada arquivo de resultados), tamanho dos arquivos (meio nada a ver)
+
+dúvidas:
+quais comparações a mais podem ser realizadas?
+pq os tempos parecem melhor no O1?
+a memória alocada calculada no DGEMM.h realmente está correta?
