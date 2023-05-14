@@ -6,9 +6,9 @@
 
 // tamanho da matriz
 #define NUM_ITERACOES       10
-#define TAMANHO_MIN_MATRIZES 64 // 64 linhas e 64 colunas = 4096 células aprox 32kB
-#define TAMANHO_MAX_MATRIZES 1024  // 1024 linhas e 1024 colunas = 1048576 células aprox 8GB
-#define NUM_RESULTADOS_DESEJADOS 10
+#define TAMANHO_MIN_MATRIZES 4096 // 4096 linhas e 4096 colunas = 16.777.216 células aprox 16MB
+#define TAMANHO_MAX_MATRIZES 8192  // 8192 linhas e 8192 colunas = 67.108.864 células aprox 64MB
+#define NUM_RESULTADOS_DESEJADOS 4
 #define STEP_MATRIZES        (TAMANHO_MAX_MATRIZES-TAMANHO_MIN_MATRIZES)/NUM_RESULTADOS_DESEJADOS // deve ser multiplo de 32 assim como os tamanhos min e max das matrizes
 
 // valores inseridos na matriz
