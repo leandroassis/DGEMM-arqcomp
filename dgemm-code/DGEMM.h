@@ -4,6 +4,10 @@
 #define SEED                 0x12345678
 #define NOME_ARQUIVO         "resultadosO3.txt"
 
+// configurações do sistema
+#define CPU_CLOCK_PER_SECOND      (long) 2.4*1e9 // 2.4 GHz
+#define CORES_PER_SOCKET     4
+
 // tamanho da matriz
 #define NUM_ITERACOES       10
 #define TAMANHO_MIN_MATRIZES 4096 // 4096 linhas e 4096 colunas = 16.777.216 células aprox 16MB
