@@ -7,8 +7,6 @@ int main(void){
 
     double *matrixA, *matrixB, *matrixC;
     struct timespec t_ini = {0, 0}, t_fim = {0, 0};
-    long _ciclos_gastos;
-    double GFLOPS_aprox[2];
     float t_exe[2];
     FILE *fp;
     
@@ -17,7 +15,7 @@ int main(void){
 
     // abre o arquivo para escrita
     fp = fopen(NOME_ARQUIVO, "w");
-    fprintf(fp, "Tamanho da matriz;Tempo DGEMM normal;GFLOPS DGEMM normal;Tempo DGEMM melhorado;GFLOPS DGEMM melhorado;\n");
+    fprintf(fp, "Tamanho da matriz;Tempo DGEMM normal;Tempo DGEMM melhorado\n");
     
     for(int i = 0; i < NUM_ITERACOES; i++){
 
@@ -34,23 +32,19 @@ int main(void){
             clock_gettime(CLOCK_MONOTONIC, &t_ini); // tempo de inicio
             dgemm(size, matrixA, matrixB, matrixC);
             clock_gettime(CLOCK_MONOTONIC, &t_fim); // tempo final
-            t_exe[0] = (t_fim.tv_sec - t_ini.tv_sec) + (t_fim.tv_nsec - t_ini.tv_nsec) / 1e9; 
+            t_exe[0] = (t_fim.tv_sec - t_ini.tv_sec) + (t_fim.tv_nsec - t_ini.tv_nsec) / 1e9; // tempo de execução
 
-            _ciclos_gastos = ((long) t_exe[0])*CPU_CLOCK_PER_SECOND;
-            GFLOPS_aprox[0] = CPU_CLOCK_PER_SECOND*(size*size*size*3/4)/(_ciclos_gastos*1e9);
-            printf("Tempo de execução do algoritmo DGEMM normal com matriz de tamanho %zu: %.6f s / %.1f GFLOPS/s.\n", size*size, t_exe[0], GFLOPS_aprox[0]);
+            printf("Tempo de execução do algoritmo DGEMM normal com matriz de tamanho %.2f MB: %.6f s.\n", (float) (size*size/(1024*1024)), t_exe[0]);
 
             // roda o algoritmo DGEMM otimizado
             clock_gettime(CLOCK_MONOTONIC, &t_ini);
             dgemm_optimized(size, matrixA, matrixB, matrixC);
             clock_gettime(CLOCK_MONOTONIC, &t_fim);
-            t_exe[1] = (t_fim.tv_sec - t_ini.tv_sec) + (t_fim.tv_nsec - t_ini.tv_nsec) / 1e9; 
+            t_exe[1] = (t_fim.tv_sec - t_ini.tv_sec) + (t_fim.tv_nsec - t_ini.tv_nsec) / 1e9; // tempo de execução
 
-            _ciclos_gastos = ((long) t_exe[1])*CPU_CLOCK_PER_SECOND;
-            GFLOPS_aprox[1] = CPU_CLOCK_PER_SECOND*(size*size*size*3/4)/(_ciclos_gastos*1e9 );
-            printf("Tempo de execução do algoritmo DGEMM melhorado com matriz de tamanho %zu: %.6f s / %.1f GFLOPS/s.\n", size*size, t_exe[1], GFLOPS_aprox[1]);
+            printf("Tempo de execução do algoritmo DGEMM melhorado com matriz de tamanho %.2f MB: %.6f s.\n", (float) (size*size/(1024*1024)), t_exe[1]);
 
-            fprintf(fp, "%zu;%.6f;%1.f;%.6f;%.1f;\n", size*size, t_exe[0], GFLOPS_aprox[0], t_exe[1], GFLOPS_aprox[1]);
+            fprintf(fp, "%zu;%.6f;%.6f\n", size*size, t_exe[0], t_exe[1]);
 
             free(matrixA);
             free(matrixB);
