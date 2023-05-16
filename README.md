@@ -1,4 +1,5 @@
 comparar com as otimizações do capítulo 4
+comparar com CUDA nvidia
 comparar com flags de otimização O1, O2, O3 e otimização padrão
 comparar com para diferentes tamanhos de matrizes
 
