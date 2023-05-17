@@ -45,7 +45,7 @@ int main(void){
             clock_gettime(CLOCK_MONOTONIC, &t_fim);
             t_exe = (t_fim.tv_sec - t_ini.tv_sec) + (t_fim.tv_nsec - t_ini.tv_nsec) / 1e9; // tempo de execução
 
-            printf("Tempo de execução do algoritmo DGEMM melhorado com matriz de tamanho %.2f MB: %.6f s.\n", (float) (size*size/(1024*1024)), t_exe);
+            printf("Tempo de execução do algoritmo DGEMM AVX com matriz de tamanho %.2f MB: %.6f s.\n", (float) (size*size/(1024*1024)), t_exe);
             fprintf(fp, "%.6f;", t_exe);
 
             // roda o algoritmo DGEMM otimizado com AVX e UNROLL
@@ -54,7 +54,7 @@ int main(void){
             clock_gettime(CLOCK_MONOTONIC, &t_fim);
             t_exe = (t_fim.tv_sec - t_ini.tv_sec) + (t_fim.tv_nsec - t_ini.tv_nsec) / 1e9; // tempo de execução
 
-            printf("Tempo de execução do algoritmo DGEMM melhorado com matriz de tamanho %.2f MB: %.6f s.\n", (float) (size*size/(1024*1024)), t_exe);
+            printf("Tempo de execução do algoritmo DGEMM AVX + unroll com matriz de tamanho %.2f MB: %.6f s.\n", (float) (size*size/(1024*1024)), t_exe);
             fprintf(fp, "%.6f\n", t_exe);
 
             free(matrixA);
