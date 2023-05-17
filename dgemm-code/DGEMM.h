@@ -15,6 +15,8 @@
 #define MIN_DOUBLE           -100000.0
 #define MAX_DOUBLE            100000.0
 
+
+#define UNROLL 4
 /*
     GFLOPS = num_floatops/tempo;
 */
@@ -22,7 +24,8 @@
 #include <stdlib.h>
 
 void dgemm(const size_t, const double*, const double*, double*);
-void dgemm_optimized(const size_t, double*, double*, double*);
+void dgemm_AVX(const size_t, double*, double*, double*);
+void dgemm_AVX_unroll(const int, double*, double*, double*);
 
 void aloca_matrizes(const size_t size, double **, double **, double **);
 void inicializa_matrizes(const size_t size, double *, double *, double *);
