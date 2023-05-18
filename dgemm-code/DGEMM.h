@@ -2,7 +2,7 @@
 #define DGEMM_H
 
 #define SEED                 0x12345678
-#define NOME_ARQUIVO         "resultadosO3.txt"
+#define NOME_ARQUIVO         "resultadosO3.csv"
 
 // tamanho da matriz
 #define NUM_ITERACOES       10
@@ -15,11 +15,7 @@
 #define MIN_DOUBLE           -100000.0
 #define MAX_DOUBLE            100000.0
 
-
 #define UNROLL 4
-/*
-    GFLOPS = num_floatops/tempo;
-*/
 
 #include <stdlib.h>
 
