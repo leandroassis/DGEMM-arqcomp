@@ -2,13 +2,12 @@
 #define DGEMM_H
 
 #define SEED                 0x12345678
-#define NOME_ARQUIVO         "resultadosO3.csv"
 
 // tamanho da matriz
 #define NUM_ITERACOES       10
 #define TAMANHO_MIN_MATRIZES 4096 // 4096 linhas e 4096 colunas = 16.777.216 células aprox 16MB
-#define TAMANHO_MAX_MATRIZES 8192  // 8192 linhas e 8192 colunas = 67.108.864 células aprox 64MB
-#define NUM_RESULTADOS_DESEJADOS 2
+#define TAMANHO_MAX_MATRIZES 8192 // 8192 linhas e 8192 colunas = 67.108.864 células aprox 64MB
+#define NUM_RESULTADOS_DESEJADOS 4
 #define STEP_MATRIZES        (TAMANHO_MAX_MATRIZES-TAMANHO_MIN_MATRIZES)/NUM_RESULTADOS_DESEJADOS // deve ser multiplo de 32 assim como os tamanhos min e max das matrizes
 
 // valores inseridos na matriz
