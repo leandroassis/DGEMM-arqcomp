@@ -9,6 +9,9 @@ CFLAGS = -Wall -lrt -mavx
 dgemm: $(OBJ)
 	$(CC) -o $@ $^
 
+compare: $(OBJ)
+	$(CC) -o $@ $^
+
 run:
 	#make dgemm OLVL=-Ofast UNROLL=-DflagUNROLL=1
 	#./dgemm resultadosO4.csv

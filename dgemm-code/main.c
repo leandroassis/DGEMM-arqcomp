@@ -8,8 +8,9 @@ int main(int argc, char *argv[]){
     double *matrixA, *matrixB, *matrixC;
     struct timespec t_ini = {0, 0}, t_fim = {0, 0};
     float t_exe;
-    FILE *fp;
+    FILE *fp, *fp2;
     int suportaUnroll = flagUNROLL;
+    double erroAVX = 0.0, erroUNROLL = 0.0, erroMedio = 0.0;
 
     // seeda o gerador de números aleatórios
     srand(SEED);
@@ -26,7 +27,12 @@ int main(int argc, char *argv[]){
     if(suportaUnroll) fprintf(fp, "Tamanho da matriz;Tempo DGEMM normal;Tempo DGEMM AVX; Tempo DGEMM AVX + UNROLL\n");
     else fprintf(fp, "Tamanho da matriz;Tempo DGEMM normal;Tempo DGEMM AVX\n");
     
-    
+    // compara os erros médios das diferentes formas de otimização para uma matriz pequena
+    erroMedio = compara_matrizes(512, &erroAVX, &erroUNROLL);
+    fp2 = fopen("erros.csv", "a");
+    fprintf(fp2, "Erro médio;Erro AVX;Erro UNROLL\n");
+    fprintf(fp2, "%f;%f;%f\n", erroMedio, erroAVX, erroUNROLL);
+
     for(size_t size = TAMANHO_MIN_MATRIZES; size <= TAMANHO_MAX_MATRIZES; size+=STEP_MATRIZES){
 
         // aloca memoria para as matrizes A, B e C se beneficiando da localidade espacial

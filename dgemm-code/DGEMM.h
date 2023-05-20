@@ -26,4 +26,6 @@ void aloca_matrizes(const size_t size, double **, double **, double **);
 void inicializa_matrizes(const size_t size, double *, double *, double *);
 double rand_double();
 
+double compara_matrizes(const size_t size, double *er_AVX, double *er_UNROLL);
+
 #endif

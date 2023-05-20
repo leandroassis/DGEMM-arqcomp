@@ -47,22 +47,56 @@ void dgemm_AVX_unroll(const int n, double *A, double *B, double *C){
 }
 
 void aloca_matrizes(const size_t size, double **A, double **B, double **C){
-    *A = (double *) aligned_alloc(32, size * sizeof(double));
-    *B = (double *) aligned_alloc(32, size * sizeof(double));
-    *C = (double *) aligned_alloc(32, size * sizeof(double));
+    if(A != NULL) *A = (double *) aligned_alloc(32, size * sizeof(double));
+    if(B != NULL) *B = (double *) aligned_alloc(32, size * sizeof(double));
+    if(C != NULL) *C = (double *) aligned_alloc(32, size * sizeof(double));
 }
 
 void inicializa_matrizes(const size_t size, double *A, double *B, double *C){
     for(size_t i = 0; i < size; i++){
         for(size_t j = 0; j < size; j++){
                 // atribui valores aleatórios 
-                A[i + j*size] = rand_double();
-                B[i + j*size] = rand_double();
-                C[i + j*size] = 0.0;
+                if(A != NULL) A[i + j*size] = rand_double();
+                if(B != NULL) B[i + j*size] = rand_double();
+                if(C != NULL) C[i + j*size] = 0.0;
         }
     }
 }
 
 double rand_double(){
     return (MIN_DOUBLE + (rand()*(MAX_DOUBLE - MIN_DOUBLE)/RAND_MAX));
+}
+
+double compara_matrizes(const size_t size, double *er_AVX, double *er_UNROLL){
+    double erro_AVX = 0.0, erro_UNROLL = 0.0, erro_medio = 0;
+
+    double *C1, *C2, *C3, *A, *B;
+
+    aloca_matrizes(size*size, &A, &B, &C1);
+    aloca_matrizes(size*size, &C2, &C3, NULL);
+
+    inicializa_matrizes(size, A, B, C1);
+    inicializa_matrizes(size, NULL, NULL, C2);
+    inicializa_matrizes(size, NULL, NULL, C3);
+
+    dgemm_AVX_unroll(size, A, B, C1);
+    dgemm_AVX(size, A, B, C2);
+    dgemm(size, A, B, C3);
+
+    for(size_t i = 0; i < size; i++){
+        for(size_t j = 0; j < size; j++){
+            erro_AVX += abs(C3[i + j*size] - C2[i + j*size])/(size*size);
+            erro_UNROLL += abs(C3[i + j*size] - C1[i + j*size])/(size*size);
+        }
+    }
+
+    erro_medio = (erro_AVX + erro_UNROLL)/2;
+
+    free(A);
+    free(B);
+    free(C1);
+    free(C2);
+    free(C3);
+    
+    return erro_medio;
 }
