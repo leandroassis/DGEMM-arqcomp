@@ -4,7 +4,7 @@
 #define SEED                 0x12345678
 
 // tamanho da matriz
-#define NUM_ITERACOES       10
+#define NUM_ITERACOES       3
 #define TAMANHO_MIN_MATRIZES 4096 // 4096 linhas e 4096 colunas = 16.777.216 células aprox 16MB
 #define TAMANHO_MAX_MATRIZES 8192 // 8192 linhas e 8192 colunas = 67.108.864 células aprox 64MB
 #define NUM_RESULTADOS_DESEJADOS 4
