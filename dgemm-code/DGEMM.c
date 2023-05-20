@@ -68,7 +68,7 @@ double rand_double(){
 }
 
 double compara_matrizes(const size_t size, double *er_AVX, double *er_UNROLL){
-    double erro_AVX = 0.0, erro_UNROLL = 0.0, erro_medio = 0;
+    double erro_medio = 0;
 
     double *C1, *C2, *C3, *A, *B, *garbage;
 
@@ -83,12 +83,12 @@ double compara_matrizes(const size_t size, double *er_AVX, double *er_UNROLL){
 
     for(size_t i = 0; i < size; i++){
         for(size_t j = 0; j < size; j++){
-            erro_AVX += abs(C3[i + j*size] - C2[i + j*size])/(size*size);
-            erro_UNROLL += abs(C3[i + j*size] - C1[i + j*size])/(size*size);
+            *er_AVX += abs(C3[i + j*size] - C2[i + j*size])/(size*size);
+            *er_UNROLL += abs(C3[i + j*size] - C1[i + j*size])/(size*size);
         }
     }
 
-    erro_medio = (erro_AVX + erro_UNROLL)/2;
+    erro_medio = (*er_AVX + *er_UNROLL)/2;
 
     free(A);
     free(B);
