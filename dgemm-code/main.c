@@ -9,7 +9,7 @@ int main(int argc, char *argv[]){
     struct timespec t_ini = {0, 0}, t_fim = {0, 0};
     float t_exe;
     FILE *fp, *fp2;
-    int suportaUnroll = flagUNROLL;
+    int suportaUnroll = flagUNROLL, computaTempo = TEMPO;
     double erroAVX = 0.0, erroUNROLL = 0.0, erroMedio = 0.0;
 
     // seeda o gerador de números aleatórios
@@ -29,9 +29,16 @@ int main(int argc, char *argv[]){
     
     // compara os erros médios das diferentes formas de otimização para uma matriz pequena
     erroMedio = compara_matrizes(512, &erroAVX, &erroUNROLL);
+    
     fp2 = fopen("erros.csv", "a");
     fprintf(fp2, "Erro médio;Erro AVX;Erro UNROLL\n");
     fprintf(fp2, "%f;%f;%f\n", erroMedio, erroAVX, erroUNROLL);
+    fclose(fp2);
+
+    if(!computaTempo){
+	    fclose(fp);
+	    return 0;
+    }
 
     for(size_t size = TAMANHO_MIN_MATRIZES; size <= TAMANHO_MAX_MATRIZES; size+=STEP_MATRIZES){
 
