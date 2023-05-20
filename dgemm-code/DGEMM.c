@@ -47,18 +47,18 @@ void dgemm_AVX_unroll(const int n, double *A, double *B, double *C){
 }
 
 void aloca_matrizes(const size_t size, double **A, double **B, double **C){
-    if(A != NULL) *A = (double *) aligned_alloc(32, size * sizeof(double));
-    if(B != NULL) *B = (double *) aligned_alloc(32, size * sizeof(double));
-    if(C != NULL) *C = (double *) aligned_alloc(32, size * sizeof(double));
+    *A = (double *) aligned_alloc(32, size * sizeof(double));
+    *B = (double *) aligned_alloc(32, size * sizeof(double));
+    *C = (double *) aligned_alloc(32, size * sizeof(double));
 }
 
 void inicializa_matrizes(const size_t size, double *A, double *B, double *C){
     for(size_t i = 0; i < size; i++){
         for(size_t j = 0; j < size; j++){
                 // atribui valores aleatórios 
-                if(A != NULL) A[i + j*size] = rand_double();
-                if(B != NULL) B[i + j*size] = rand_double();
-                if(C != NULL) C[i + j*size] = 0.0;
+                A[i + j*size] = rand_double();
+                B[i + j*size] = rand_double();
+                C[i + j*size] = 0.0;
         }
     }
 }
@@ -70,14 +70,12 @@ double rand_double(){
 double compara_matrizes(const size_t size, double *er_AVX, double *er_UNROLL){
     double erro_AVX = 0.0, erro_UNROLL = 0.0, erro_medio = 0;
 
-    double *C1, *C2, *C3, *A, *B;
+    double *C1, *C2, *C3, *A, *B, *garbage;
 
     aloca_matrizes(size*size, &A, &B, &C1);
-    aloca_matrizes(size*size, &C2, &C3, NULL);
+    aloca_matrizes(size*size, &C2, &C3, &garbage);
 
-    inicializa_matrizes(size, A, B, C1);
-    inicializa_matrizes(size, NULL, NULL, C2);
-    inicializa_matrizes(size, NULL, NULL, C3);
+    inicializa_matrizes(size, A, B, garbage);
 
     dgemm_AVX_unroll(size, A, B, C1);
     dgemm_AVX(size, A, B, C2);
@@ -97,6 +95,7 @@ double compara_matrizes(const size_t size, double *er_AVX, double *er_UNROLL){
     free(C1);
     free(C2);
     free(C3);
+    free(garbage);
     
     return erro_medio;
 }
