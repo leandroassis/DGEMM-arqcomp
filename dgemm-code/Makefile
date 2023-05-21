@@ -18,17 +18,11 @@ run:
 	./dgemm resultadosO3.csv
 	make clean
 
-	#make dgemm OLVL=-O2 UNROLL=-DflagUNROLL=0
-	#./dgemm resultadosO2.csv
-	#make clean
-
-	#make dgemm OLVL=-O1 UNROLL=-DflagUNROLL=0
-	#./dgemm resultadosO1.csv
-	#make clean
-
-	make dgemm OLVL=-O0 UNROLL=-DflagUNROLL=0
+	make dgemm OLVL=-O0 UNROLL=-DflagUNROLL=1
 	./dgemm resultadosO0.csv
 	make clean
+
+	echo "Não esquece de rodar o script para pegar o tempo UNROLL pro Ofast"
 
 clean_resultados:
 	rm -rf resultadosO*

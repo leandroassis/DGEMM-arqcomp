@@ -30,18 +30,21 @@ void dgemm_AVX(const size_t n, double *A, double *B, double *C){
     }
 }
 
-void dgemm_AVX_unroll(const int n, double *A, double *B, double *C){
-    for(int i = 0; i < n; i+=UNROLL*4){
-        for(int j = 0; j < n; j++){
-            __m256d c[4];
-            for(int x = 0; x < UNROLL; x++) c[x] = _mm256_load_pd(C + i + x*4 + j*n);
+void dgemm_AVX_unroll(const size_t n, double *A, double *B, double *C){
+    for(size_t i = 0; i < n; i+=UNROLL*4){
+        for(size_t j = 0; j < n; j++){
+            __m256d c[UNROLL];
+            
+            for(size_t x = 0; x < UNROLL; x++) c[x] = _mm256_load_pd(C + i + x*UNROLL + j*n);
 
-            for(int k = 0; k < n; k++){
+            for(size_t k = 0; k < n; k++){
                 __m256d b = _mm256_broadcast_sd(B + k + j*n);
-                for(int x = 0; x < UNROLL; x++) c[x] = _mm256_add_pd(c[x], _mm256_mul_pd(_mm256_load_pd(A + i + x*4 + k*n), b));
+                for(size_t x = 0; x < UNROLL; x++){
+                    c[x] = _mm256_add_pd(c[x], _mm256_mul_pd(_mm256_load_pd(A + i + x*UNROLL + k*n), b));
+                    _mm256_store_pd(C + i + x*UNROLL + j*n, c[x]);
+                }
             }
-
-            for(int x = 0; i < UNROLL; x++) _mm256_store_pd(C + i + x*4 + j*n, c[x]);
+            //for(size_t x = 0; i < UNROLL; x++) _mm256_store_pd(C + i + x*UNROLL + j*n, c[x]); // Ofast e O3 simplesmente ignoram esse loop
         }
     }
 }
@@ -56,9 +59,9 @@ void inicializa_matrizes(const size_t size, double *A, double *B, double *C){
     for(size_t i = 0; i < size; i++){
         for(size_t j = 0; j < size; j++){
                 // atribui valores aleatórios 
-                A[i + j*size] = rand_double();
-                B[i + j*size] = rand_double();
-                C[i + j*size] = 0.0;
+                if(A != NULL) A[i + j*size] = rand_double();
+                if(B != NULL) B[i + j*size] = rand_double();
+                if(C != NULL) C[i + j*size] = 0.0;
         }
     }
 }

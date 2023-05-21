@@ -1,12 +1,12 @@
+## OBS: FAZER -Ofast para DGEMM + Unroll
+
 comparar com CUDA nvidia
-comparar com flags de otimização O1, O2, O3 e otimização padrão
+comparar com flags de otimização O0, O3 e Ofast
 comparar com para diferentes tamanhos de matrizes
 
 comparações:
 - tempo médio por tamanho (grafico para cada arquivo de resultados)
 - GFLOPS/s
 
-dúvidas:
-- quais outras comparações sao inteligentes
-- Como calcular OPS por tamanho?
-- queria fazer uma implementação com CUDA, vale a pena?
+Resultados:
+- O0 e O1 sao pessimos, nao da nem pra esperar fazer
