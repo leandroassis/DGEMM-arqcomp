@@ -49,7 +49,7 @@ void dgemm_AVX_unroll(const int n, double *A, double *B, double *C){
 void aloca_matrizes(const size_t size, double **A, double **B, double **C){
     *A = (double *) aligned_alloc(32, size * sizeof(double));
     *B = (double *) aligned_alloc(32, size * sizeof(double));
-    *C = (double *) aligned_alloc(32, size * sizeof(double));
+    if(C != NULL) *C = (double *) aligned_alloc(32, size * sizeof(double));
 }
 
 void inicializa_matrizes(const size_t size, double *A, double *B, double *C){
@@ -67,35 +67,26 @@ double rand_double(){
     return (MIN_DOUBLE + (rand()*(MAX_DOUBLE - MIN_DOUBLE)/RAND_MAX));
 }
 
-double compara_matrizes(const size_t size, double *er_AVX, double *er_UNROLL){
-    double erro_medio = 0;
+double compara_matrizes(const size_t size, const double *C1, const double *C2, const double *C3, double *err_AVX, double *err_UNROLL){
+    double erro_medio = 0, erro;
 
-    double *C1, *C2, *C3, *A, *B, *garbage;
-
-    aloca_matrizes(size*size, &A, &B, &C1);
-    aloca_matrizes(size*size, &C2, &C3, &garbage);
-
-    inicializa_matrizes(size, A, B, garbage);
-
-    dgemm_AVX_unroll(size, A, B, C1);
-    dgemm_AVX(size, A, B, C2);
-    dgemm(size, A, B, C3);
+    *err_AVX = 0;
+    *err_UNROLL = 0;
 
     for(size_t i = 0; i < size; i++){
         for(size_t j = 0; j < size; j++){
-            *er_AVX += abs(C3[i + j*size] - C2[i + j*size])/(size*size);
-            *er_UNROLL += abs(C3[i + j*size] - C1[i + j*size])/(size*size);
+            //printf("C1[%zu][%zu] = %.2f\n", i, j, C1[i + j*size]);
+            //printf("C2[%zu][%zu] = %.2f\n", i, j, C2[i + j*size]);
+            //printf("C3[%zu][%zu] = %.2f\n", i, j, C3[i + j*size]);
+
+            erro = C1[i + j*size] - C2[i + j*size];
+            *err_AVX += erro > 0 ? erro : -1*erro;
+            erro = C1[i + j*size] - C3[i + j*size];
+            *err_UNROLL += erro > 0 ? erro : -1*erro;
         }
     }
 
-    erro_medio = (*er_AVX + *er_UNROLL)/2;
-
-    free(A);
-    free(B);
-    free(C1);
-    free(C2);
-    free(C3);
-    free(garbage);
+    erro_medio = (*err_AVX + *err_UNROLL)/2;
     
     return erro_medio;
 }

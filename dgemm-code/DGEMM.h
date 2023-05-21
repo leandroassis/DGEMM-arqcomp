@@ -5,8 +5,8 @@
 
 // tamanho da matriz
 #define NUM_ITERACOES       3
-#define TAMANHO_MIN_MATRIZES 4096 // 4096 linhas e 4096 colunas = 16.777.216 células aprox 16MB
-#define TAMANHO_MAX_MATRIZES 8192 // 8192 linhas e 8192 colunas = 67.108.864 células aprox 64MB
+#define TAMANHO_MIN_MATRIZES 32 // 4096 linhas e 4096 colunas = 16.777.216 células aprox 16MB
+#define TAMANHO_MAX_MATRIZES 64 // 8192 linhas e 8192 colunas = 67.108.864 células aprox 64MB
 #define NUM_RESULTADOS_DESEJADOS 4
 #define STEP_MATRIZES        (TAMANHO_MAX_MATRIZES-TAMANHO_MIN_MATRIZES)/NUM_RESULTADOS_DESEJADOS // deve ser multiplo de 32 assim como os tamanhos min e max das matrizes
 
@@ -26,6 +26,6 @@ void aloca_matrizes(const size_t size, double **, double **, double **);
 void inicializa_matrizes(const size_t size, double *, double *, double *);
 double rand_double();
 
-double compara_matrizes(const size_t size, double *er_AVX, double *er_UNROLL);
+double compara_matrizes(const size_t size, const double *, const double *, const double *, double *, double *);
 
 #endif
