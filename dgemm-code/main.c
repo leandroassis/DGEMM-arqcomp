@@ -44,7 +44,7 @@ int main(int argc, char *argv[]){
 
             // roda o algoritmo DGEMM normal
             clock_gettime(CLOCK_MONOTONIC, &t_ini); // tempo de inicio
-            //dgemm(size, matrixA, matrixB, matrixC1);
+            dgemm(size, matrixA, matrixB, matrixC1);
             clock_gettime(CLOCK_MONOTONIC, &t_fim); // tempo final
             t_exe = (t_fim.tv_sec - t_ini.tv_sec) + (t_fim.tv_nsec - t_ini.tv_nsec) / 1e9; // tempo de execução
 
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
 
             // roda o algoritmo DGEMM otimizado com AVX
             clock_gettime(CLOCK_MONOTONIC, &t_ini);
-            //dgemm_AVX(size, matrixA, matrixB, matrixC2);
+            dgemm_AVX(size, matrixA, matrixB, matrixC2);
             clock_gettime(CLOCK_MONOTONIC, &t_fim);
             t_exe = (t_fim.tv_sec - t_ini.tv_sec) + (t_fim.tv_nsec - t_ini.tv_nsec) / 1e9; // tempo de execução
 
