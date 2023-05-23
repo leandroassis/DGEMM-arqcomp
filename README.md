@@ -1,5 +1,5 @@
-## OBS: FAZER -Ofast para DGEMM + Unroll
-
+## OBS: REFAZER -Ofast para AVX + Unroll
+## MULTIPLICAÇÃO DAS MATRIZES EM CUDA
 comparar com CUDA nvidia
 comparar com flags de otimização O0, O3 e Ofast
 comparar com para diferentes tamanhos de matrizes
