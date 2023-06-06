@@ -16,7 +16,6 @@ void dgemm(const size_t n, const double *A, const double *B, double *C){
     }
 }
 
-
 void dgemm_AVX(const size_t n, double *A, double *B, double *C){
 // código retirado do livro
     for(size_t i = 0; i < n; i+=4){
