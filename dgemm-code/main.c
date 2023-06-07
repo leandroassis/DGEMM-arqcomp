@@ -25,7 +25,7 @@ int main(int argc, char *argv[]){
     fp = fopen(argv[1], "w"); // RESULTADOS
     fp2 = fopen("erros.csv", "a"); // ERROS
 
-    if(suportaUnroll) fprintf(fp, "Tamanho da matriz;Tempo DGEMM normal;Tempo DGEMM AVX; Tempo DGEMM AVX + UNROLL\n");
+    //if(suportaUnroll) fprintf(fp, "Tamanho da matriz;Tempo DGEMM normal;Tempo DGEMM AVX; Tempo DGEMM AVX + UNROLL\n");
 
     for(size_t size = TAMANHO_MIN_MATRIZES; size <= TAMANHO_MAX_MATRIZES; size+=STEP_MATRIZES){
 
