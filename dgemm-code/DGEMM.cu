@@ -1,4 +1,5 @@
-// compile com nvcc .\DGEMM.cu -o teste -O3 -Xptxas -O3 -lineinfo -arch=sm_61 -use_fast_math
+// compile com nvcc .\DGEMM.cu -o saida -O3 -Xptxas -O3 -lineinfo -arch=sm_61 -use_fast_math
+// verifique a arquitetura da sua GPU
 
 #include <cuda_runtime.h>
 #include <cuda_runtime_api.h>

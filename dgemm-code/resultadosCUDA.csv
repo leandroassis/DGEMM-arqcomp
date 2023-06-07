@@ -1,4 +1,4 @@
-Tamanho da matriz;Tempo DGEMM
+Tamanho da matriz;Tempo DGEMM (ms)
 16777216;4876.276855
 16777216;5020.081055
 16777216;5172.062988
