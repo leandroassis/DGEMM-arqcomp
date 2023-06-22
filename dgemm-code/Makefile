@@ -10,15 +10,15 @@ dgemm: $(OBJ)
 	$(CC) -o $@ $^
 
 run:
-	#make dgemm OLVL=-Ofast UNROLL=-DflagUNROLL=1
+	#make dgemm OLVL=-Ofast UNROLL=-self.dataframelagUNROLL=1
 	#./dgemm resultadosO4.csv
 	#make clean
 
-	make dgemm OLVL=-O3 UNROLL=-DflagUNROLL=1
-	./dgemm resultadosO3.csv
-	make clean
+	#make dgemm OLVL=-O3 UNROLL=-self.dataframelagUNROLL=1
+	#./dgemm resultadosO3.csv
+	#make clean
 
-	make dgemm OLVL=-O0 UNROLL=-DflagUNROLL=1
+	make dgemm OLVL=-O0 UNROLL=-self.dataframelagUNROLL=1
 	./dgemm resultadosO0.csv
 	make clean
 

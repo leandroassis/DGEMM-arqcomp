@@ -48,9 +48,36 @@ void dgemm_AVX_unroll(const size_t n, double *A, double *B, double *C){
     }
 }
 
+void do_block(const size_t n, const size_t si, const size_t sj, const size_t sk, double *A, double *B, double *C){
+    for(size_t i = si; i < si+BLOCKSIZE; i+=UNROLL*4){
+        for(size_t j = sj; j < sj+BLOCKSIZE; j++){
+            __m256d c[UNROLL];
+            for(size_t x = 0; x < UNROLL; x++) c[x] = _mm256_load_pd(C + i + x*UNROLL + j*n);
+            for(size_t k = sk; k < sk+BLOCKSIZE; k++){
+                __m256d b = _mm256_broadcast_sd(B + k + j*n);
+                for(size_t x = 0; x < UNROLL; x++){
+                    c[x] = _mm256_add_pd(c[x], _mm256_mul_pd(_mm256_load_pd(A + i + x*UNROLL + k*n), b));
+                }
+
+                for(size_t x = 0; x < UNROLL; x++) _mm256_store_pd(C + i + x*UNROLL + j*n, c[x]);
+            }
+        }
+    }
+}
+
+void dgemm_AVX_BLOCK(const size_t n, double *A, double *B, double *C){
+    for(size_t sj = 0; sj < n; sj += BLOCKSIZE){
+        for(size_t si = 0; si < n; si += BLOCKSIZE){
+            for(size_t sk = 0; sk < n; sk += BLOCKSIZE){
+                do_block(n, si, sj, sk, A, B, C);
+            }
+        }
+    }
+}
+
 void aloca_matrizes(const size_t size, double **A, double **B, double **C){
-    *A = (double *) aligned_alloc(32, size * sizeof(double));
-    *B = (double *) aligned_alloc(32, size * sizeof(double));
+    if(A != NULL) *A = (double *) aligned_alloc(32, size * sizeof(double));
+    if(B != NULL) *B = (double *) aligned_alloc(32, size * sizeof(double));
     if(C != NULL) *C = (double *) aligned_alloc(32, size * sizeof(double));
 }
 

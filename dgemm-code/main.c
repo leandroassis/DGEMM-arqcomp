@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[]){
 
-    double *matrixA, *matrixB, *matrixC1, *matrixC2, *matrixC3;
+    double *matrixA, *matrixB, *matrixC1, *matrixC2, *matrixC3, *matrixC4;
     struct timespec t_ini = {0, 0}, t_fim = {0, 0};
     float t_exe;
     FILE *fp, *fp2;
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]){
     }
 
     // abre o arquivo para escrita
-    fp = fopen(argv[1], "w"); // RESULTADOS
+    fp = fopen(argv[1], "a"); // RESULTADOS
     fp2 = fopen("erros.csv", "a"); // ERROS
 
     //if(suportaUnroll) fprintf(fp, "Tamanho da matriz;Tempo DGEMM normal;Tempo DGEMM AVX; Tempo DGEMM AVX + UNROLL\n");
@@ -31,17 +31,19 @@ int main(int argc, char *argv[]){
 
         // aloca memoria para as matrizes A, B e C se beneficiando da localidade espacial
         // pois os acessos à memória são agrupados
-        aloca_matrizes(size*size, &matrixA, &matrixB, &matrixC1);
-        aloca_matrizes(size*size, &matrixC2, &matrixC3, NULL);        
+        aloca_matrizes(size*size, &matrixA, &matrixB, &matrixC4);
+        //aloca_matrizes(size*size, &matrixC2, &matrixC3, &matrixC4);
 
         // inicializa as matrizes com valores "aleatórios"
-        inicializa_matrizes(size, matrixA, matrixB, matrixC1);
-        inicializa_matrizes(size, NULL, NULL, matrixC2);
-        inicializa_matrizes(size, NULL, NULL, matrixC3);
+        inicializa_matrizes(size, matrixA, matrixB, matrixC4);
+        //inicializa_matrizes(size, NULL, NULL, matrixC2);
+        //inicializa_matrizes(size, NULL, NULL, matrixC3);
+        //inicializa_matrizes(size, NULL, NULL, matrixC1).
 
         for(int i = 0; i < NUM_ITERACOES; i++){
             fprintf(fp, "%zu;", size*size);
 
+            /*
             // roda o algoritmo DGEMM normal
             clock_gettime(CLOCK_MONOTONIC, &t_ini); // tempo de inicio
             dgemm(size, matrixA, matrixB, matrixC1);
@@ -71,20 +73,33 @@ int main(int argc, char *argv[]){
                 fprintf(fp, "%.6f\n", t_exe);
             }
             else fprintf(fp, "N/A\n");
+            */
 
+            // roda o algoritmo DGEMM com block
+            clock_gettime(CLOCK_MONOTONIC, &t_ini); // tempo de inicio
+            dgemm_AVX_BLOCK(size, matrixA, matrixB, matrixC4);
+            clock_gettime(CLOCK_MONOTONIC, &t_fim); // tempo final
+            t_exe = (t_fim.tv_sec - t_ini.tv_sec) + (t_fim.tv_nsec - t_ini.tv_nsec) / 1e9; // tempo de execução
+
+            printf("Tempo de execução do algoritmo DGEMM block com matriz de tamanho %.2f MB: %.6f s.\n", (float) (size*size/(1024*1024)), t_exe);
+            fprintf(fp, "%.6f;", t_exe);
+            
+            /*
             // calcula o erro entre as matrizes C1, C2 e C3
             erroMedio = compara_matrizes(size, matrixC1, matrixC2, matrixC3, &erroAVX, &erroUNROLL);
             if(suportaUnroll) fprintf(fp2, "%zu;%.6f;%.6f;%.6f\n", size*size, erroMedio, erroAVX, erroUNROLL);
             else fprintf(fp2, "%zu;%.6f;%.6f;N/A\n", size*size, erroMedio, erroAVX);
+            */
 
             printf("\n");
         }
 
         free(matrixA);
         free(matrixB);
-        free(matrixC1);
-        free(matrixC2);
-        free(matrixC3);
+        //free(matrixC1);
+        //free(matrixC2);
+        //free(matrixC3);
+        free(matrixC4);
         printf("\n");
     }
 
