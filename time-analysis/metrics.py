@@ -10,7 +10,7 @@ class Resultados():
         self.mediaFLOPS = []
         self.mediaTempo = []
 
-    def calculaFLOPS(self) -> list:
+    def calculaFLOPS(self) -> None:
         '''
             Calcula o FLOPS médio para cada tamanho de matriz em cada função.
 
@@ -45,7 +45,7 @@ class Resultados():
 
                 self.mediaFLOPS[-1].append((flops/1e9, std_flops/1e9))
 
-        return self.mediaFLOPS
+        return None
     
     def getFLOPSValues(self, tamanho : str) -> list:
         '''
@@ -109,3 +109,34 @@ class Resultados():
             case _:
                 print("Função inválida.")
                 return []
+    
+    def toDataFrame(self):
+        '''
+            Retorna um dataframe com os valores médio de FLOPS e um com os valores médio de tempo de execução de cada função.
+        '''
+
+        if self.mediaFLOPS == []:
+            self.calculaFLOPS()
+
+        FLOPS = []
+        tempo = []
+        for i in self.mediaFLOPS:
+            FLOPS.append([])
+            for j in i:
+                media, std = round(j[0], 2), round(j[1], 2)
+                FLOPS[-1].append(f"{media:.2f} ± {std:.2f}")
+
+        for i in self.mediaTempo:
+            tempo.append([])
+            for j in i:
+                media, std = round(j[0], 2), round(j[1], 2)
+                tempo[-1].append(f"{media:.2f} ± {std:.2f}")
+
+        if "resultadosCUDA" in self.name:
+            tempo = pd.DataFrame(tempo, index=["CUDA"], columns=["4096X4096", "5120X5120", "6144X6144", "7168X7168", "8192X8192"])
+            flops = pd.DataFrame(FLOPS, index=["CUDA"], columns=["4096X4096", "5120X5120", "6144X6144", "7168X7168", "8192X8192"])
+        else:
+            tempo = pd.DataFrame(tempo, index=["Normal", "AVX", "Unroll", "Block"], columns=["4096X4096", "5120X5120", "6144X6144", "7168X7168", "8192X8192"])
+            flops = pd.DataFrame(FLOPS, index=["Normal", "AVX", "Unroll", "Block"], columns=["4096X4096", "5120X5120", "6144X6144", "7168X7168", "8192X8192"])
+        
+        return flops, tempo
