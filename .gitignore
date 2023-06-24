@@ -1,2 +1,3 @@
 *.o
 time-analysis/.ipynb_checkpoints
+time-analysis/__pycache__
